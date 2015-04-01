@@ -1,5 +1,5 @@
 name:           exception-mtl
-version:        0.3.0.5
+version:        0.4
 cabal-version:  >= 1.10
 license:        BSD3
 license-file:   LICENSE
@@ -8,9 +8,9 @@ copyright:      (c) 2008-2011 Harvard University
 author:         Geoffrey Mainland <mainland@cs.drexel.edu>
 maintainer:     Geoffrey Mainland <mainland@cs.drexel.edu>
 stability:      alpha
-homepage:       http://www.cs.drexel.edu/~mainland/
+bug-reports:    https://github.com/mainland/exception-mtl/issues
 category:       Control, Monad, Error Handling, Failure
-synopsis:       Exception monad transformer instances for mtl2 classes.
+synopsis:       Exception monad transformer instances for mtl classes.
 description:    This package provides exception monad transformer instances for
                 the classes defined by mtl.
 
@@ -24,8 +24,8 @@ library
 
   build-depends:
     base                   >= 4   && < 5,
-    exception-transformers >= 0.3 && < 0.4,
-    mtl                    >= 2.0 && < 3.0,
+    exception-transformers >= 0.3 && < 0.5,
+    mtl                    >= 2.0 && < 5.0,
     transformers           >= 0.2 && < 0.5
 
   ghc-options:
