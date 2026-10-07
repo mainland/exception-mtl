@@ -4,10 +4,11 @@ cabal-version:  >= 1.10
 license:        BSD3
 license-file:   LICENSE
 copyright:      (c) 2008-2011 Harvard University
-                (c) 2011-2018 Geoffrey Mainland
+                (c) 2011-2026 Geoffrey Mainland
 author:         Geoffrey Mainland <mainland@drexel.edu>
 maintainer:     Geoffrey Mainland <mainland@drexel.edu>
 stability:      alpha
+homepage:       https://github.com/mainland/exception-mtl
 bug-reports:    https://github.com/mainland/exception-mtl/issues
 category:       Control, Monad, Error Handling, Failure
 synopsis:       Exception monad transformer instances for mtl classes.
@@ -47,4 +48,4 @@ library
 
 source-repository head
   type:     git
-  location: git://github.com/mainland/exception-mtl.git
+  location: https://github.com/mainland/exception-mtl.git
