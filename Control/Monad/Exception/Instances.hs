@@ -37,8 +37,9 @@ instance (MonadReader r m) => MonadReader r (ExceptionT m) where
     local f m = ExceptionT $ local f (runExceptionT m)
 
 instance (MonadState s m) => MonadState s (ExceptionT m) where
-    get = lift get
-    put = lift . put
+    get   = lift get
+    put   = lift . put
+    state = lift . state
 
 instance (MonadWriter w m) => MonadWriter w (ExceptionT m) where
     tell     = lift . tell

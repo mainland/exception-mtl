@@ -1,4 +1,6 @@
-{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts           #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE MultiParamTypeClasses      #-}
 
 module Main (main) where
 
@@ -56,12 +58,40 @@ stateTests = testGroup "MonadState"
         runS ((put 2 >> throw TestException >> put 3 >> get)
                   `catch` \TestException -> get) 1
             @?= (Right 2, 2)
+    , testCase "state calls the underlying state" $
+        runRecorder (state (\s -> (s, s + 1))) 1 @?= (Right 1, 2, ["state"])
     ]
   where
     runS :: ExceptionT (S.State Int) a
          -> Int
          -> (Either (Maybe TestException) a, Int)
     runS m s = let (a, s') = S.runState (runExceptionT m) s in (caught a, s')
+
+-- | A state monad whose 'MonadState' methods record which of them ran. A test
+-- can then tell whether 'state' reached the underlying monad's 'state' or a
+-- definition built from 'get' and 'put'.
+newtype Recorder a = Recorder (S.State (Int, [String]) a)
+    deriving (Functor, Applicative, Monad)
+
+instance MonadState Int Recorder where
+    get     = record "get" >> Recorder (S.gets fst)
+    put s   = record "put" >> Recorder (S.modify (\(_, calls) -> (s, calls)))
+    state f = record "state" >> Recorder (S.state update)
+      where
+        update (s, calls) = let (a, s') = f s in (a, (s', calls))
+
+record :: String -> Recorder ()
+record call = Recorder $ S.modify $ \(s, calls) -> (s, call : calls)
+
+-- | Run a computation in 'Recorder' from an initial state, and return its
+-- result, its final state, and the 'MonadState' methods it called in order.
+runRecorder :: ExceptionT Recorder a
+            -> Int
+            -> (Either (Maybe TestException) a, Int, [String])
+runRecorder m s0 = (caught a, s, reverse calls)
+  where
+    Recorder m'     = runExceptionT m
+    (a, (s, calls)) = S.runState m' (s0, [])
 
 readerTests :: TestTree
 readerTests = testGroup "MonadReader"
