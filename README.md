@@ -12,3 +12,10 @@ The [`exceptions`](https://hackage.haskell.org/package/exceptions) package
 supersedes
 [`exception-transformers`](https://hackage.haskell.org/package/exception-transformers),
 and new code should use it.
+
+## AI assistance
+
+All contributions included in releases through version `0.4.0.2` were made
+without AI assistance. AI tools were used in development, review, and release
+preparation after that version, through version `0.4.0.3`. The maintainer
+remains responsible for this release.
